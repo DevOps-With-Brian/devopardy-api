@@ -2,6 +2,8 @@
 A FastAPI connected to a postgresql db for DevOps trivia questions storing and retrieval.
 
 
+![Swagger Screenshot](./screenshots/swagger_ss.png)
+
 # Running Locally
 For now this is still in development, to run it locally you need docker and docker-compose.
 

@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: postgresql-deployment
+spec:
+  selector:
+    matchLabels:
+      app: devopardy-api-postgresql
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: devopardy-api-postgresql
+    spec:
+      containers:
+      - name: devopardy-api-postgresql-container
+        image: postgres:latest
+        env:
+        - name: POSTGRES_USER
+            valueFrom:
+              secretKeyRef:
+                name: devopardy-prd
+                key: POSTGRES_USER
+        - name: POSTGRES_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: devopardy-prd
+                key: POSTGRES_PASSWORD
+        - name: POSTGRES_DB
+            valueFrom:
+              secretKeyRef:
+                name: devopardy-prd
+                key: POSTGRES_DB
+        volumeMounts:
+        - name: devopardy-api-postgresql-persistent-storage
+          mountPath: /var

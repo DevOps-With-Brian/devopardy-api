@@ -1,0 +1,19 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: devopardy-api-db-migration
+spec:
+  template:
+    metadata:
+      name: devopardy-api-db-migration
+    spec:
+      containers:
+      - name: devopardy-api-db-migration-job-container
+        image: devopswithbrian/devopardy-db-migration:latest
+        env:
+        - name: DATABASE_URL
+            valueFrom:
+              secretKeyRef:
+                name: devopardy-prd
+                key: DATABASE_URL
+      restartPolicy: Never

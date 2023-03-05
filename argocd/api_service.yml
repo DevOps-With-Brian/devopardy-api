@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: devopardy-api-service
+spec:
+  selector:
+    app: devopardy-api
+  type: ClusterIP 
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 80

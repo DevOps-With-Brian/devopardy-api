@@ -13,28 +13,6 @@ spec:
       labels:
         app: devopardy-db
     spec:
-      initContainers:
-        - name: init-postgres
-          image: postgres:13
-          command:
-            - /bin/bash
-            - "-c"
-            - |
-              set -e
-              mkdir -p /var/lib/postgresql/data/devopardy
-              chown postgres:postgres /var/lib/postgresql/data/devopardy
-              if [ ! -f "/var/lib/postgresql/data/devopardy/PG_VERSION" ]; then
-                gosu postgres initdb -D /var/lib/postgresql/data/devopardy
-              fi
-                volumeMounts:
-                  - name: postgres-data
-                    mountPath: /var/lib/postgresql/data
-                env:
-                  - name: POSTGRES_PASSWORD
-                    valueFrom:
-                      secretKeyRef:
-                        name: devopardy-prd
-                        key: POSTGRES_PASSWORD
       containers:
         - name: postgres
           image: postgres:13
@@ -72,4 +50,4 @@ spec:
     - ReadWriteOnce
   resources:
     requests:
-      storage: 1Gi
+      storage: 40Gi

@@ -10,7 +10,7 @@ spec:
     spec:
       containers:
         - name: alembic
-          image: devopswithbrian/devopardy-db-migration:1.5
+          image: devopswithbrian/devopardy-db-migration:1.6
           env:
             - name: DB_USER
               valueFrom:
@@ -32,6 +32,6 @@ spec:
             - name: DB_HOST
               value: devopardy-db
             - name: ALEMBIC_CONFIG
-              value: /app/alembic.ini
+              value: /usr/src/app/alembic.ini
           imagePullPolicy: Always
       restartPolicy: Never

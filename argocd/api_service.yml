@@ -1,12 +1,12 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: devopardy-api-service
+  name: devopardy-api
+  namespace: default
 spec:
   selector:
     app: devopardy-api
-  type: ClusterIP 
   ports:
-  - protocol: TCP
-    port: 80
-    targetPort: 80
+    - name: devopardy-api
+      port: 8000
+      targetPort: 8000

@@ -1,21 +1,16 @@
-apiVersion: apps/v1
-kind: Deployment
+apiVersion: batch/v1
+kind: Job
 metadata:
-  name: devopardy-api
+  name: devopardy-alembic-migrate
   namespace: default
 spec:
-  selector:
-    matchLabels:
-      app: devopardy-api
-  replicas: 1
   template:
     metadata:
-      labels:
-        app: devopardy-api
+      name: devopardy-alembic-migrate
     spec:
       containers:
-        - name: devopardy-api
-          image: devopswithbrian/devopardy-api:latest
+        - name: alembic
+          image: devopswithbrian/devopardy-db-migration:latest
           env:
             - name: DB_USER
               valueFrom:
@@ -31,6 +26,10 @@ spec:
               value: devopardy
             - name: DB_HOST
               value: devopardy-db
-          ports:
-            - containerPort: 8000
-              name: devopardy-api
+          command:
+            - /bin/sh
+            - -c
+            - |
+              alembic upgrade head
+          imagePullPolicy: Always
+      restartPolicy: Never

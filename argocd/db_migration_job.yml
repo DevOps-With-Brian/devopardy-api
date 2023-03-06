@@ -10,7 +10,7 @@ spec:
     spec:
       containers:
         - name: alembic
-          image: devopswithbrian/devopardy-db-migration:1.1
+          image: devopswithbrian/devopardy-db-migration:1.2
           env:
             - name: DB_USER
               valueFrom:

@@ -1,3 +1,9 @@
+## 0.4.0 (2023-03-08)
+
+### Feat
+
+- **dockerfile**: updating main dockerfile
+
 ## 0.3.0 (2023-03-08)
 
 ### Feat

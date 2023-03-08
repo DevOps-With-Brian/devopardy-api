@@ -1,3 +1,9 @@
+## 0.12.0 (2023-03-08)
+
+### Feat
+
+- **api**: adding more api routes that have full CRUD
+
 ## 0.11.0 (2023-03-08)
 
 ### Feat

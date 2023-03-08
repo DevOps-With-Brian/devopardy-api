@@ -41,7 +41,6 @@ jobs:
         name: Build and push
         uses: docker/build-push-action@v4
         with:
-          context: api/.
-          file: Dockerfile
+          file: ./api/Dockerfile
           push: true
           tags: devopswithbrian/devopardy-api:latest,devopswithbrian/devopardy-api:${{ env.COMMITIZEN_VER }}

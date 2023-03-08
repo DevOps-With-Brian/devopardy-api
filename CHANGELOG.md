@@ -1,3 +1,9 @@
+## 0.6.0 (2023-03-08)
+
+### Feat
+
+- **api**: fixing api dockerfiles
+
 ## 0.5.0 (2023-03-08)
 
 ### Feat

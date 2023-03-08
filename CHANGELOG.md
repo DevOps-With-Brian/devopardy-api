@@ -1,3 +1,9 @@
+## 0.11.0 (2023-03-08)
+
+### Feat
+
+- **docker**: updating docker setup
+
 ## 0.10.0 (2023-03-08)
 
 ### Feat

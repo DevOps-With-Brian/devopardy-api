@@ -1,3 +1,9 @@
+## 0.10.0 (2023-03-08)
+
+### Feat
+
+- **dockerfile**: fixing dockerfile
+
 ## 0.9.0 (2023-03-08)
 
 ### Feat

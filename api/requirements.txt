@@ -4,3 +4,4 @@ psycopg2-binary==2.9.5
 sqlmodel==0.0.8
 asyncpg==0.27.0
 alembic==1.9.4
+Commitizen==2.42.1

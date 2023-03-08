@@ -1,3 +1,9 @@
+## 0.9.0 (2023-03-08)
+
+### Feat
+
+- **docker**: fixing docker builds
+
 ## 0.8.0 (2023-03-08)
 
 ### Feat

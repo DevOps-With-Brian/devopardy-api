@@ -6,12 +6,12 @@ WORKDIR /usr/src/app
 COPY migrations ./migrations
 COPY ./alembic.ini .
 
-# install python dependencies
-RUN pip install --upgrade pip
-COPY requirements.txt .
-RUN pip install -r requirements.txt
 
 # add App
 COPY . .
+
+# install python dependencies
+RUN pip install --upgrade pip
+RUN pip install -r requirements.txt
 
 CMD ["alembic", "upgrade", "head"]

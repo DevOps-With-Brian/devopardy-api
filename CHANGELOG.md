@@ -1,3 +1,9 @@
+## 0.13.0 (2023-03-09)
+
+### Feat
+
+- **actions**: updating actions to build images
+
 ## 0.12.0 (2023-03-08)
 
 ### Feat

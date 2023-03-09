@@ -42,6 +42,6 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           context: ./api
-          file: .api/SqlDockerfile
+          file: ./api/SqlDockerfile
           push: true
           tags: devopswithbrian/devopardy-db-migration:latest,devopswithbrian/devopardy-db-migration:${{ env.COMMITIZEN_VER }}

@@ -1,13 +1,9 @@
-name: docker-build-push
+name: docker-build-push-db-migration
 
 on:
   push:
     branches:
       - 'main'
-    paths:
-      - api/migrations/*
-      - alembic.ini
-      - SqlDockerfile
 
 jobs:
   docker:

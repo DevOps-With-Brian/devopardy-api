@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: devopardy-api
-          image: devopswithbrian/devopardy-api:0.11.0
+          image: devopswithbrian/devopardy-api:0.14.0
           env:
             - name: DB_USER
               valueFrom:

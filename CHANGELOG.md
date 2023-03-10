@@ -1,3 +1,9 @@
+## 0.15.0 (2023-03-10)
+
+### Feat
+
+- **routes**: fixing the api routes to work with the UI (#4)
+
 ## 0.14.0 (2023-03-09)
 
 ### Feat

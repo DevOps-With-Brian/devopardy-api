@@ -33,9 +33,9 @@ async def startup_event():
 
 
 @app.get('/categories')
-async def get_categories(session: AsyncSession = Depends(get_session)):
+async def get_categories(count: int = 6, session: AsyncSession = Depends(get_session)):
     async with session as s:
-        stmt = select(Category).order_by(Category.id)
+        stmt = select(Category).order_by(Category.id).limit(count)
         result = await s.execute(stmt)
         categories = result.scalars().all()
         return categories
@@ -101,9 +101,9 @@ async def get_clues_by_category(category_id: int, session: AsyncSession = Depend
 
 
 @app.get('/clues')
-async def get_clues(session: AsyncSession = Depends(get_session)):
+async def get_clues(count: int = 6, session: AsyncSession = Depends(get_session)):
     async with session as s:
-        stmt = select(Clue).order_by(Clue.id)
+        stmt = select(Clue).order_by(Clue.id).limit(count)
         result = await s.execute(stmt)
         clues = result.scalars().all()
         return clues

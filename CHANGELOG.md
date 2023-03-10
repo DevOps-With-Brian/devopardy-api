@@ -1,3 +1,9 @@
+## 0.16.0 (2023-03-10)
+
+### Feat
+
+- **api**: updating routes to include a count to reduce the amount pulled back
+
 ## 0.15.0 (2023-03-10)
 
 ### Feat

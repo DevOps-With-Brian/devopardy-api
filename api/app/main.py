@@ -1,4 +1,5 @@
 from fastapi import FastAPI, HTTPException, Depends
+from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
@@ -13,6 +14,19 @@ from .schemas.clue import ClueCreate, ClueUpdate, ClueInDB
 
 app = FastAPI()
 
+origins = [
+    "http://localhost:3000"
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+
 @app.on_event("startup")
 async def startup_event():
     await init_db()
@@ -24,7 +38,7 @@ async def get_categories(session: AsyncSession = Depends(get_session)):
         stmt = select(Category).order_by(Category.id)
         result = await s.execute(stmt)
         categories = result.scalars().all()
-        return {'categories': categories}
+        return categories
 
 
 @app.post('/categories', response_model=CategoryInDB)
@@ -83,7 +97,7 @@ async def get_clues_by_category(category_id: int, session: AsyncSession = Depend
         category = result.scalar()
         if category is None:
             raise HTTPException(status_code=404, detail="Category not found")
-        return {'clues': category.clues}
+        return category.clues
 
 
 @app.get('/clues')
@@ -92,7 +106,7 @@ async def get_clues(session: AsyncSession = Depends(get_session)):
         stmt = select(Clue).order_by(Clue.id)
         result = await s.execute(stmt)
         clues = result.scalars().all()
-        return {'clues': clues}
+        return clues
 
 
 @app.post('/clues', response_model=ClueInDB)

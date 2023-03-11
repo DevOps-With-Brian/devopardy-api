@@ -1,3 +1,9 @@
+## 0.16.1 (2023-03-11)
+
+### Fix
+
+- **api**: setup new route for the game to only pull 5 records per category with values (#5)
+
 ## 0.16.0 (2023-03-10)
 
 ### Feat

@@ -1,3 +1,9 @@
+## 0.17.0 (2023-03-11)
+
+### Feat
+
+- **new-game**: updated the new-game route and a few others to work for the UI (#6)
+
 ## 0.16.1 (2023-03-11)
 
 ### Fix

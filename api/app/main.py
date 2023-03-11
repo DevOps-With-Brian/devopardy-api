@@ -2,7 +2,7 @@ from fastapi import FastAPI, HTTPException, Depends
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy import select
+from sqlalchemy import select, func
 from sqlalchemy.orm import selectinload
 
 
@@ -98,16 +98,31 @@ async def get_clues_by_category(category_id: int, session: AsyncSession = Depend
         if category is None:
             raise HTTPException(status_code=404, detail="Category not found")
         return category.clues
+    
+
+@app.get('/categories/{category_id}/start_game')
+async def start_game(category_id: int, session: AsyncSession = Depends(get_session)):
+    async with session as s:
+        clues = []
+        for value in [100, 200, 300, 400, 500]:
+            stmt = select(Clue).where(Clue.category_id == category_id, Clue.value == value).order_by(func.random()).limit(1)
+            result = await s.execute(stmt)
+            clue = result.scalar()
+            if clue is None:
+                raise HTTPException(status_code=404, detail=f"No clue found for category_id {category_id} and value {value}")
+            clues.append(clue)
+        return clues
+
 
 
 @app.get('/clues')
 async def get_clues(count: int = 6, session: AsyncSession = Depends(get_session)):
     async with session as s:
-        stmt = select(Clue).order_by(Clue.id).limit(count)
+        stmt = select(Clue).order_by(func.random()).limit(count)
         result = await s.execute(stmt)
         clues = result.scalars().all()
         return clues
-
+    
 
 @app.post('/clues', response_model=ClueInDB)
 async def create_clue(clue: ClueCreate, session: AsyncSession = Depends(get_session)):

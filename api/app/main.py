@@ -4,6 +4,7 @@ from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select, func
 from sqlalchemy.orm import selectinload
+from typing import List
 
 
 from .db import get_session, init_db
@@ -41,19 +42,32 @@ async def get_categories(count: int = 6, session: AsyncSession = Depends(get_ses
         return categories
 
 
-@app.post('/categories', response_model=CategoryInDB)
-async def create_category(category: CategoryCreate, session: AsyncSession = Depends(get_session)):
+@app.get('/categories/{category_id}')
+async def get_category(category_id: int, session: AsyncSession = Depends(get_session)):
     async with session as s:
-        new_category = Category(name=category.name)
-        s.add(new_category)
-        try:
-            await s.commit()
-            await s.refresh(new_category)
-            print(new_category.name)
-            return new_category
-        except IntegrityError:
-            await s.rollback()
-            raise HTTPException(status_code=400, detail="Category name already exists")
+        stmt = select(Category).where(Category.id == category_id)
+        result = await s.execute(stmt)
+        category = result.scalar()
+        if category is None:
+            raise HTTPException(status_code=404, detail=f"Category {category_id} not found")
+        return category
+
+
+@app.post('/categories', response_model=List[CategoryInDB])
+async def create_categories(categories: List[CategoryCreate], session: AsyncSession = Depends(get_session)):
+    async with session as s:
+        new_categories = []
+        for category in categories:
+            new_category = Category(name=category.name)
+            s.add(new_category)
+            try:
+                await s.commit()
+                await s.refresh(new_category)
+                new_categories.append(new_category)
+            except IntegrityError:
+                await s.rollback()
+                raise HTTPException(status_code=400, detail="Category name already exists")
+        return new_categories
 
 
 @app.put('/categories/{category_id}', response_model=CategoryInDB)
@@ -98,22 +112,20 @@ async def get_clues_by_category(category_id: int, session: AsyncSession = Depend
         if category is None:
             raise HTTPException(status_code=404, detail="Category not found")
         return category.clues
-    
+
 
 @app.get('/categories/{category_id}/start_game')
 async def start_game(category_id: int, session: AsyncSession = Depends(get_session)):
     async with session as s:
         clues = []
         for value in [100, 200, 300, 400, 500]:
-            stmt = select(Clue).where(Clue.category_id == category_id, Clue.value == value).order_by(func.random()).limit(1)
+            stmt = select(Clue).join(Category).filter(Clue.category_id == category_id).order_by(func.random()).limit(5)
             result = await s.execute(stmt)
             clue = result.scalar()
             if clue is None:
                 raise HTTPException(status_code=404, detail=f"No clue found for category_id {category_id} and value {value}")
             clues.append(clue)
         return clues
-
-
 
 @app.get('/clues')
 async def get_clues(count: int = 6, session: AsyncSession = Depends(get_session)):
@@ -124,21 +136,24 @@ async def get_clues(count: int = 6, session: AsyncSession = Depends(get_session)
         return clues
     
 
-@app.post('/clues', response_model=ClueInDB)
-async def create_clue(clue: ClueCreate, session: AsyncSession = Depends(get_session)):
+@app.post('/clues', response_model=List[ClueInDB])
+async def create_clues(clues: List[ClueCreate], session: AsyncSession = Depends(get_session)):
+    created_clues = []
     async with session as s:
-        category = await s.get(Category, clue.category_id)
-        if category is None:
-            raise HTTPException(status_code=404, detail="Category not found")
-        new_clue = Clue(**clue.dict(), category=category)
-        s.add(new_clue)
-        try:
-            await s.commit()
-            await s.refresh(new_clue)
-            return new_clue
-        except IntegrityError:
-            await s.rollback()
-            raise HTTPException(status_code=400, detail="Clue already exists")
+        for clue in clues:
+            category = await s.get(Category, clue.category_id)
+            if category is None:
+                raise HTTPException(status_code=404, detail="Category not found")
+            new_clue = Clue(**clue.dict(), category=category)
+            s.add(new_clue)
+            try:
+                await s.commit()
+                await s.refresh(new_clue)
+                created_clues.append(new_clue)
+            except IntegrityError:
+                await s.rollback()
+                raise HTTPException(status_code=400, detail="Clue already exists")
+    return created_clues
 
 
 # Update an existing clue

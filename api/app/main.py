@@ -18,7 +18,8 @@ app = FastAPI()
 origins = [
     "http://localhost:3000",
     "http://devopardy-ui:3000",
-    "http://devopardy-ui:80"
+    "http://devopardy-ui:80",
+    "https://devopardy.devopswithbrian.com"
 ]
 
 app.add_middleware(

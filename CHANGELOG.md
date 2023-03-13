@@ -1,3 +1,9 @@
+## 0.17.1 (2023-03-13)
+
+### Fix
+
+- **cors**: updating cors for new k8s deployment
+
 ## 0.17.0 (2023-03-11)
 
 ### Feat

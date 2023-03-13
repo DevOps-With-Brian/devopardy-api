@@ -16,7 +16,9 @@ from .schemas.clue import ClueCreate, ClueUpdate, ClueInDB
 app = FastAPI()
 
 origins = [
-    "http://localhost:3000"
+    "http://localhost:3000",
+    "http://devopardy-ui:3000",
+    "http://devopardy-ui:80"
 ]
 
 app.add_middleware(

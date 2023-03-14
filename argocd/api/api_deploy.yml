@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: devopardy-api
-          image: devopswithbrian/devopardy-api:0.18.0
+          image: devopswithbrian/devopardy-api:0.18.1
           env:
             - name: DB_USER
               valueFrom:
@@ -32,6 +32,21 @@ spec:
                 secretKeyRef:
                   name: devopardy-prd
                   key: DATABASE_URL
+            - name: SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: devopardy-prd
+                  key: SECRET_KEY
+            - name: ADMIN_API_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: devopardy-prd
+                  key: ADMIN_API_USERNAME
+            - name: ADMIN_API_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: devopardy-prd
+                  key: ADMIN_API_PASSWORD
             - name: DB_NAME
               value: devopardy
             - name: DB_HOST

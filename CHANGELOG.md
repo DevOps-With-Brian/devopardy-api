@@ -1,3 +1,9 @@
+## 0.18.2 (2023-03-14)
+
+### Fix
+
+- **auth**: fixing a issue in the auth setup
+
 ## 0.18.1 (2023-03-14)
 
 ### Fix

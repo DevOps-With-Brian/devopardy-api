@@ -1,3 +1,9 @@
+## 0.18.1 (2023-03-14)
+
+### Fix
+
+- **api**: updating api to lock down routes that the game won't use (#7)
+
 ## 0.18.0 (2023-03-13)
 
 ### Feat

@@ -54,7 +54,7 @@ oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
 # Hard-coded admin credentials (for demo purposes only)
 ADMIN_USERNAME = os.getenv("ADMIN_API_USERNAME")
-ADMIN_PASSWORD_HASH = pwd_context.hash(os.getenv("ADMIN_API_USERNAME"))
+ADMIN_PASSWORD_HASH = pwd_context.hash(os.getenv("ADMIN_API_PASSWORD"))
 
 
 # Verify user credentials

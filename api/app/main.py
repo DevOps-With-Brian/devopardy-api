@@ -1,6 +1,7 @@
 from fastapi import FastAPI, HTTPException, Depends
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
+from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm, OAuth2
+from fastapi.openapi.models import OAuthFlows, OAuthFlowPassword
 from jose import JWTError, jwt
 from passlib.context import CryptContext
 from datetime import datetime, timedelta
@@ -22,11 +23,38 @@ SECRET_KEY = os.getenv("SECRET_KEY")
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 30
 
+# Password hash context
+pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
-app = FastAPI()
+# OAuth2 password bearer flow
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/login")
+
+# Define OAuth2 flow for Swagger UI
+oauth_flow = {"tokenUrl": "login"}
+oauth_flows = OAuthFlows(password=OAuthFlowPassword(tokenUrl="/login"))
+
+
+ADMIN_USERNAME = os.getenv("ADMIN_API_USERNAME")
+ADMIN_PASSWORD_HASH = pwd_context.hash(os.getenv("ADMIN_API_PASSWORD"))
+
+app = FastAPI(
+    title="DevOps-With-Brian devopardy-api",
+    version="1.0.0",
+    description="DevOps-With-Brian devopardy-api",
+    openapi_tags=[],
+    components={
+        "securitySchemes": {
+            "oauth2_scheme": OAuth2(
+                flows=OAuthFlows(password=OAuthFlowPassword(tokenUrl="login"))
+            )
+        }
+    },
+    security=[{"oauth2_scheme": []}],
+)
 
 origins = [
     "http://localhost:3000",
+    "http://localhost:8081",
     "http://devopardy-ui:3000",
     "http://devopardy-ui:80",
     "https://devopardy.devopswithbrian.com"
@@ -44,17 +72,6 @@ app.add_middleware(
 @app.on_event("startup")
 async def startup_event():
     await init_db()
-
-# Password hash context
-pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
-
-# OAuth2 password bearer flow
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
-
-
-# Hard-coded admin credentials (for demo purposes only)
-ADMIN_USERNAME = os.getenv("ADMIN_API_USERNAME")
-ADMIN_PASSWORD_HASH = pwd_context.hash(os.getenv("ADMIN_API_PASSWORD"))
 
 
 # Verify user credentials

@@ -1,3 +1,9 @@
+## 0.19.0 (2023-03-20)
+
+### Feat
+
+- **auth**: updating api to allow for logging into the swagger UI (#8)
+
 ## 0.18.2 (2023-03-14)
 
 ### Fix
